@@ -1,0 +1,64 @@
+<div class="session-detail">
+  <div class="session-header">
+    <h1><%= @session.name %></h1>
+    <div class="session-actions">
+      <%= link_to "Edit", edit_session_path(@session), class: "btn btn-secondary" %>
+      <%= link_to "Back to Sessions", sessions_path, class: "btn btn-secondary" %>
+      <%= link_to "Delete", @session, method: :delete, 
+                  class: "btn btn-danger", 
+                  confirm: "Are you sure?",
+                  data: { turbo_method: :delete } %>
+    </div>
+  </div>
+
+  <div class="session-info">
+    <div class="time-card focus-card">
+      <h3>Focus Time</h3>
+      <div class="time-display"><%= @session.focus_time %> minutes</div>
+    </div>
+
+    <div class="time-card break-card">
+      <h3>Break Time</h3>
+      <div class="time-display"><%= @session.break_time %> minutes</div>
+    </div>
+  </div>
+
+  <div class="timer-section" 
+       data-controller="timer" 
+       data-timer-focus-time-value="<%= @session.focus_time %>"
+       data-timer-break-time-value="<%= @session.break_time %>"
+       data-timer-session-id-value="<%= @session.id %>">
+    
+    <div class="timer-display">
+      <div class="timer-time" data-timer-target="time">00:00</div>
+      <div class="timer-label" data-timer-target="label">Ready to Focus</div>
+      <div class="timer-progress">
+        <div class="timer-progress-bar" data-timer-target="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="timer-controls">
+      <button class="btn btn-primary btn-large" 
+              data-timer-target="startButton"
+              data-action="click->timer#start">Start Focus Session</button>
+      
+      <button class="btn btn-secondary" 
+              data-timer-target="pauseButton"
+              data-action="click->timer#pause"
+              style="display: none;">Pause</button>
+      
+      <button class="btn btn-danger" 
+              data-timer-target="stopButton"
+              data-action="click->timer#stop"
+              style="display: none;">Stop</button>
+    </div>
+
+    <% if @session.completed? %>
+      <div class="completion-badge">
+        <p>✅ This session has been completed!</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+

@@ -1,0 +1,40 @@
+<%= turbo_frame_tag "session_form" do %>
+  <div class="form-container">
+    <h2>Edit Session</h2>
+    
+    <%= form_with(model: @session, data: { turbo_frame: "session_form" }) do |form| %>
+      <% if @session.errors.any? %>
+        <div class="error-messages">
+          <h4><%= pluralize(@session.errors.count, "error") %> prohibited this session from being saved:</h4>
+          <ul>
+            <% @session.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.label :name, class: "form-label" %>
+        <%= form.text_field :name, placeholder: "e.g., Morning Focus", class: "form-input" %>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <%= form.label :focus_time, "Focus Time (minutes)", class: "form-label" %>
+          <%= form.number_field :focus_time, placeholder: "25", min: 1, class: "form-input" %>
+        </div>
+
+        <div class="form-group">
+          <%= form.label :break_time, "Break Time (minutes)", class: "form-label" %>
+          <%= form.number_field :break_time, placeholder: "5", min: 1, class: "form-input" %>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Update Session", class: "btn btn-primary" %>
+        <%= link_to "Cancel", sessions_path, class: "btn btn-secondary", data: { turbo_frame: "_top" } %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

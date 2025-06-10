@@ -1,0 +1,38 @@
+<div id="flash-messages"></div>
+
+<div class="header">
+  <h1>Focus Sessions</h1>
+  <%= link_to "New Session", new_session_path, class: "btn btn-primary", data: { turbo_frame: "session_form" } %>
+</div>
+
+<%= turbo_frame_tag "session_form" %>
+
+<div id="sessions-list" class="sessions-list">
+  <% if @sessions.any? %>
+    <% @sessions.each do |session| %>
+      <div class="session-card <%= 'completed' if session.completed? %>">
+        <h3><%= session.name %></h3>
+        <div class="session-details">
+          <span class="focus-time">Focus: <%= session.focus_time %> min</span>
+          <span class="break-time">Break: <%= session.break_time %> min</span>
+        </div>
+        <div class="session-actions">
+          <%= link_to "View", session, class: "btn btn-secondary" %>
+          <% unless session.completed? %>
+            <%= link_to "Edit", edit_session_path(session), class: "btn btn-secondary", data: { turbo_frame: "session_form" } %>
+          <% end %>
+          <%= link_to "Delete", session, method: :delete, 
+                      class: "btn btn-danger", 
+                      confirm: "Are you sure?",
+                      data: { turbo_method: :delete } %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="empty-state">
+      <p>No sessions yet. Create your first focus session!</p>
+    </div>
+  <% end %>
+</div>
+
+
